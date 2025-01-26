@@ -24,6 +24,8 @@
 
 ### - dynamic data updates
 
+![StudentRecordUpdate](https://github.com/nieinter/images/blob/main/ezgif.com-animated-gif-maker%20(5).gif)
+
 # Used Python modules:
 
 - [ttkbootstrap](https://ttkbootstrap.readthedocs.io/en/latest/)
