@@ -1,36 +1,34 @@
 # Student record
-### Simple student record Windows desktop application. To run application five modules must be installed (+ [MongoDB](https://www.mongodb.com)): [ttkbootstrap](https://ttkbootstrap.readthedocs.io/en/latest/), [matplotlib](https://matplotlib.org), [pymongo](https://pymongo.readthedocs.io/en/stable/), [Pillow](https://pillow.readthedocs.io/en/stable/) and [bcrypt](https://pypi.org/project/bcrypt/)
+### Simple student record - desktop app for Windows. To run application five modules must be installed (+ [MongoDB](https://www.mongodb.com)): [ttkbootstrap](https://ttkbootstrap.readthedocs.io/en/latest/), [matplotlib](https://matplotlib.org), [pymongo](https://pymongo.readthedocs.io/en/stable/), [Pillow](https://pillow.readthedocs.io/en/stable/) and [bcrypt](https://pypi.org/project/bcrypt/)
 
 ### Layout
-![Quiz1](https://github.com/nieinter/images/blob/main/quiz1solar.png)
+![StudentRecordGif](https://github.com/nieinter/images/blob/main/ezgif.com-animated-gif-maker%20(3).gif)
 
 # Features
 
-### - light and dark themes
+### - user authentication
   
-![QuizGif](https://github.com/nieinter/images/blob/main/ezgif.com-animated-gif-maker%20(1).gif)
+![StudentRecordLogin](https://github.com/nieinter/images/blob/main/record_login.png)
 
-### - progress meter
+### - detailed grade data in a tabular format
 
-![QuizMeter](https://github.com/nieinter/images/blob/main/obraz_2025-01-23_152844517.png)
+![StudentRecordTable](https://github.com/nieinter/images/blob/main/record_table.png)
 
-### - table with question and correct answer
+### - data visualization
   
-![QuizTable](https://github.com/nieinter/images/blob/main/obraz_2025-01-23_152908275.png)
+![StudentRecordPlot](https://github.com/nieinter/images/blob/main/record_plot.png)
 
-### - quick swap of questions and answers
+### - quick swap of chart and averages comparison
 
-![QuizSwap](https://github.com/nieinter/images/blob/main/ezgif.com-animated-gif-maker%20(2).gif)
+![StudentRecordSwap](https://github.com/nieinter/images/blob/main/ezgif.com-animated-gif-maker%20(4).gif)
 
-# Adding words
-
-### To add words, you need to create a .txt file and enter the words one below other e.g:
-
-![QuizTxt](https://github.com/nieinter/images/blob/main/txt_quiz.png)
+### - dynamic data updates
 
 # Used Python modules:
 
 - [ttkbootstrap](https://ttkbootstrap.readthedocs.io/en/latest/)
-- [tkinter](https://docs.python.org/3/library/tkinter.html)
-- [NumPy](https://numpy.org)
+- [matplotlib](https://matplotlib.org)
+- [pymongo](https://pymongo.readthedocs.io/en/stable/)
+- [Pillow](https://pillow.readthedocs.io/en/stable/)
+- [bcrypt](https://pypi.org/project/bcrypt/)
 
