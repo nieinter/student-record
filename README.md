@@ -30,6 +30,11 @@
 
 ![StudentRecordLow](https://github.com/nieinter/images/blob/main/record_low_grade.png)
 
+# Additional helpful programs
+
+### - [Random data generator](https://github.com/nieinter/random-data-generator-for-student-record)
+### - [Grade adder and modifier](https://github.com/nieinter/grade-adder-and-modifier)
+
 # Used Python modules:
 
 - [ttkbootstrap](https://ttkbootstrap.readthedocs.io/en/latest/)
