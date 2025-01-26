@@ -8,21 +8,26 @@ import bcrypt
 Image.CUBIC = Image.BICUBIC
 
 
+# main class
 class App(ttk.Window):
     def __init__(self) -> None:
         super().__init__(themename="superhero")
+        # window parameters
         self.minsize(800, 999)
         self.geometry("800x999")
         self.resizable(False, False)
         self.title("Logowanie")
 
+        # layout - grid configuration, widgets placement and widget initialization
         self.columnconfigure(0, weight=1, uniform="a")
         self.rowconfigure(0, weight=1, uniform="a")
         self.__frame_data = None
         self.__frame_login = LoginFrame(self)
         self.__frame_login.grid(column=0, row=0, sticky="news")
 
+    # check login data
     def check_password(self, *args, **kwargs) -> None:
+        # DB connection
         col = pymongo.MongoClient("mongodb://localhost:27017/")["grades_db"]["login_data"]
         login_u = self.__frame_login.entry_login.get()
         password_u = self.__frame_login.entry_password.get()
@@ -42,17 +47,20 @@ class App(ttk.Window):
         else:
             self.error_login()
 
+    # displays error communicate
     def error_login(self) -> None:
         self.__frame_login.label_error.configure(text="Podano zły login lub hasło")
         self.__frame_login.after(5000, lambda: self.__frame_login.label_error.configure(text=""))
 
 
+# frame with login class
 class LoginFrame(ttk.Frame):
     def __init__(self, a) -> None:
         super().__init__()
 
-        self.a = a
+        self.a = a  # referencing App class
 
+        # styles initialization
         sl = ttk.Style()
         sl.configure("TitleLabel.TLabel", font=("Century Gothic", 35))
 
@@ -62,6 +70,7 @@ class LoginFrame(ttk.Frame):
         sb = ttk.Style()
         sb.configure("B.TButton", font=("Century Gothic", 35))
 
+        # widgets initialization
         label_title_login = ttk.Label(self,
                                       text="Login",
                                       style="TitleLabel.TLabel")
@@ -88,15 +97,7 @@ class LoginFrame(ttk.Frame):
                                      text="",
                                      style="EL.TLabel")
 
-        label_title_login.grid(column=0, row=0)
-        self.entry_login.grid(column=0, row=1, sticky="n")
-        label_title_password.grid(column=0, row=2)
-        self.entry_password.grid(column=0, row=3, sticky="n")
-        button_check.grid(column=0, row=4, sticky="n")
-        self.label_error.grid(column=0, row=5, sticky="n")
-
-        self.entry_password.bind("<Return>", self.a.check_password)
-
+        # layout - grid configuration and widgets placement
         self.columnconfigure(0, weight=1, uniform="lf")
         self.rowconfigure(0, weight=1, uniform="lf")
         self.rowconfigure(1, weight=1, uniform="lf")
@@ -105,26 +106,40 @@ class LoginFrame(ttk.Frame):
         self.rowconfigure(4, weight=1, uniform="lf")
         self.rowconfigure(5, weight=1, uniform="lf")
 
+        label_title_login.grid(column=0, row=0)
+        self.entry_login.grid(column=0, row=1, sticky="n")
+        label_title_password.grid(column=0, row=2)
+        self.entry_password.grid(column=0, row=3, sticky="n")
+        button_check.grid(column=0, row=4, sticky="n")
+        self.label_error.grid(column=0, row=5, sticky="n")
 
+        # action binding
+        self.entry_password.bind("<Return>", self.a.check_password)
+
+
+# frame with data class
 class FrameData(ttk.Frame):
     def __init__(self, a, id) -> None:
         super().__init__()
-        self.a = a
-        self.id = id
+        self.a = a  # referencing App class
+        self.id = id  # user id
 
+        # DB connection
         self.col = pymongo.MongoClient("mongodb://localhost:27017/")["grades_db"]["lesson_journal"]
 
-        self.plot = True
+        self.plot = True  # is chart drawn
 
+        # chart parameters
         self.fig = plt.Figure(figsize=(6, 4), dpi=100)
         self.canvas = FigureCanvasTkAgg(self.fig, master=self)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.fig.patch.set_facecolor('#2b3e50')
 
-        self.frame = self.avg_widget()
+        self.frame = self.avg_widget()  # frame with personal average and class average
 
-        self.draw()
+        self.draw()  # displaying chart
 
+        # widgets initialization
         self.button_change = ttk.Button(self,
                                         text="⮂ Średnia na tle klasy ⮂",
                                         width=25,
@@ -174,15 +189,18 @@ class FrameData(ttk.Frame):
         self.rowconfigure(2, weight=2, uniform="fd")
         self.rowconfigure(3, weight=8, uniform="fd")
 
+        # layout - grid configuration and widgets placement
         combobox_subjects.grid(row=0, column=1)
         self.treeview.grid(row=1, column=0, columnspan=2, sticky="news")
         self.button_change.grid(row=2, column=1)
         self.canvas_widget.grid(row=3, column=0, columnspan=2, sticky="news")
 
+        # actions binding
         combobox_subjects.bind("<<ComboboxSelected>>", lambda x: self.treeview_fill())
         self.bind("<Configure>", lambda x: self.fig.tight_layout())
         self.bind("<Map>", lambda x: self.a.geometry("800x1000"))
 
+    # fills treeview with data from DB
     def treeview_fill(self) -> None:
         for row in self.treeview.get_children():
             self.treeview.delete(row)
@@ -191,12 +209,14 @@ class FrameData(ttk.Frame):
         for i in data:
             self.treeview.insert("", "end", values=list(i.values())[2:])
 
+    # refreshes data in chart every 10_000ms (10 sec)
     def draw(self) -> None:
         if self.plot:
             self.draw_avg()
 
         self.after(10_000, self.draw)
 
+    # draws chart
     def draw_avg(self) -> None:
         self.fig.clear()
         subjects = {"Matematyka": 0,
@@ -219,6 +239,7 @@ class FrameData(ttk.Frame):
         for i in subjects.keys():
             lista.append(self.col.find({"Przedmiot": i, "uid": self.id}))
 
+        # calculation weighted average
         tmp_list = []
         for i in lista:
             l = 0
@@ -246,7 +267,7 @@ class FrameData(ttk.Frame):
             subjects[list(subjects.keys())[i]] = tmp_list[i]
 
         ax = self.fig.add_subplot(111)
-        bars_colors = ["red" if values < 1.5 else "skyblue" for values in subjects.values()]
+        bars_colors = ["red" if values < 1.5 else "skyblue" for values in subjects.values()]  # if average smaller than 1.5 bar color is red
         bars = ax.barh(tuple(subjects.keys()), tuple(subjects.values()), color=bars_colors)
 
         ax.set_title("Średnia ważona z ocen", color="white")
@@ -264,7 +285,8 @@ class FrameData(ttk.Frame):
 
         self.fig.tight_layout()
         self.canvas.draw()
-
+    
+    # changes chart with average widget (personal average and class average)
     def change_plot(self) -> None:
         if self.plot:
             self.canvas_widget.grid_remove()
@@ -278,7 +300,8 @@ class FrameData(ttk.Frame):
             self.button_change.configure(text="⮂ Średnia na tle klasy ⮂")
             self.draw()
             self.plot = True
-
+    
+    # creates average widget (personal average and class average)
     def avg_widget(self) -> ttk.Frame:
         frame = ttk.Frame(self)
         frame.rowconfigure(0, weight=1, uniform="aw")
@@ -287,12 +310,13 @@ class FrameData(ttk.Frame):
 
         ttk.Style().configure("L.TLabel", font=("Century Gothic", 20))
 
+        # calculation weighted average (personal)
         oceny = []
         wagi = []
         for i in self.col.find({"uid": self.id}):
             oceny.append(i["Ocena"])
             wagi.append(i["Waga"])
-
+        
         for i in range(len(oceny)):
             if oceny[i] in ('-6', '-5', '-4', '-3', '-2'):
                 oceny[i] = float(oceny[i][1:]) - 0.25
@@ -313,6 +337,7 @@ class FrameData(ttk.Frame):
                   text=f"Twoja średnia: \n {user_avg:.2f}",
                   style="L.TLabel").grid(row=0, column=0)
 
+        # calculation weighted average (class)
         oceny = []
         wagi = []
         for i in self.col.find({"uid": {"$ne": self.id}}):
