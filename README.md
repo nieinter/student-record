@@ -28,7 +28,7 @@
 
 ### - red bars for low averages
 
-![StudentRecordLow](https://github.com/nieinter/images/blob/main/record_low.png)
+![StudentRecordLow](https://github.com/nieinter/images/blob/main/record_low_grade.png)
 
 # Used Python modules:
 
